@@ -19,15 +19,14 @@ if (string.IsNullOrWhiteSpace(connString))
 builder.Services.AddDbContext<DreamInCodeContext>(opt =>
     opt.UseSqlServer(connString));
 
-// CORS: agrega aquí los orígenes que usarás (local + GitHub Pages, etc.)
+/// CORS
 builder.Services.AddCors(o =>
 {
     o.AddPolicy("AllowWeb", p => p
         .WithOrigins(
             "http://localhost:5173",
             "https://localhost:5173",
-            "https://sebas00aag.github.io",
-            "https://sebas00aag.github.io/DreamInCodeApi"
+            "https://dreamincodeweb.vercel.app" 
         )
         .AllowAnyHeader()
         .AllowAnyMethod());
