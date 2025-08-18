@@ -48,7 +48,6 @@ public partial class DreamInCodeContext : DbContext
         entity.Property(e => e.Titulo).HasMaxLength(200);
         entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysdatetime())");
 
-        // 👇 Navegación CONSISTENTE con el POCO: ChatThreads.Usuario
         entity.HasOne(e => e.Usuario)
               .WithMany()                              // no exponemos colección en Usuarios
               .HasForeignKey(e => e.UsuarioID)
@@ -68,7 +67,6 @@ public partial class DreamInCodeContext : DbContext
         entity.Property(e => e.Role).HasMaxLength(20);
         entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysdatetime())");
 
-        // 👇 Navegación CONSISTENTE: Messages.Thread
         entity.HasOne(e => e.Thread)
               .WithMany(t => t.Messages)
               .HasForeignKey(e => e.ThreadID)
@@ -80,7 +78,7 @@ public partial class DreamInCodeContext : DbContext
     modelBuilder.Entity<Perfiles>(entity =>
     {
         entity.ToTable("Perfiles");
-        entity.HasKey(e => e.PerfilID);               // si tu PK real fuera UsuarioID, cámbialo
+        entity.HasKey(e => e.PerfilID);             
 
         entity.HasIndex(e => e.UsuarioID)
               .IsUnique()
@@ -90,9 +88,8 @@ public partial class DreamInCodeContext : DbContext
         entity.Property(e => e.Voz).HasMaxLength(20);
         entity.Property(e => e.TamanoTexto).HasMaxLength(10);
 
-        // 👇 Navegación CONSISTENTE: Perfiles.Usuario
         entity.HasOne(e => e.Usuario)
-              .WithOne()                              // no exponemos .Perfil en Usuarios
+              .WithOne()                         
               .HasForeignKey<Perfiles>(e => e.UsuarioID)
               .OnDelete(DeleteBehavior.ClientSetNull)
               .HasConstraintName("FK_Perfiles_Usuarios");
@@ -109,7 +106,6 @@ public partial class DreamInCodeContext : DbContext
         entity.Property(e => e.EntradaVozTexto).HasMaxLength(500);
         entity.Property(e => e.Fecha).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
 
-        // 👇 Navegación CONSISTENTE: HistorialInteracciones.Usuario
         entity.HasOne(e => e.Usuario)
               .WithMany()                              // no exponemos colección en Usuarios
               .HasForeignKey(e => e.UsuarioID)
@@ -128,9 +124,9 @@ public partial class DreamInCodeContext : DbContext
         entity.Property(e => e.TipoPreferencia).HasMaxLength(100);
         entity.Property(e => e.Valor).HasMaxLength(100);
 
-        // 👇 Navegación CONSISTENTE: PreferenciasUsuario.Usuario
+        
         entity.HasOne(e => e.Usuario)
-              .WithMany()                              // no exponemos colección en Usuarios
+              .WithMany()                             
               .HasForeignKey(e => e.UsuarioID)
               .OnDelete(DeleteBehavior.ClientSetNull)
               .HasConstraintName("FK__Preferenc__Usuar__6C190EBB");
@@ -182,8 +178,6 @@ public partial class DreamInCodeContext : DbContext
         entity.Property(e => e.FechaRegistro).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
         entity.Property(e => e.TipoUsuario).HasDefaultValue(1);
 
-        // Si tienes la tabla puente UsuarioEnfermedad, puedes mantener tu UsingEntity aquí
-        // tal como lo tenías, no afecta el problema actual.
     });
 
     OnModelCreatingPartial(modelBuilder);
