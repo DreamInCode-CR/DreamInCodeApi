@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DreamInCodeApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a10d528175da93b43780c6843f4ab2cb0de81edd")]
 [assembly: System.Reflection.AssemblyProductAttribute("DreamInCodeApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DreamInCodeApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
