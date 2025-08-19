@@ -26,7 +26,7 @@ builder.Services.AddCors(o =>
         .WithOrigins(
             "http://localhost:5173",
             "https://localhost:5173",
-            "https://dreamincodeweb.vercel.app" 
+            "https://web-dream-in-code.vercel.app/" 
         )
         .AllowAnyHeader()
         .AllowAnyMethod());
@@ -93,7 +93,13 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "DreamInCodeApi v1");
+    c.RoutePrefix = "swagger";
+});
+
+app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.UseHttpsRedirection();
 app.UseCors("AllowWeb");
