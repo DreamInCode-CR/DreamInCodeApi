@@ -36,7 +36,9 @@ public class Medicamento
     public bool Activo { get; set; } = true;
 
     public DateTime CreatedAt { get; set; }
-
+    
+    public TimeSpan? HoraToma { get; set; }
+    
     [ForeignKey(nameof(UsuarioID))]
     public virtual Usuarios Usuario { get; set; } = null!;
 }

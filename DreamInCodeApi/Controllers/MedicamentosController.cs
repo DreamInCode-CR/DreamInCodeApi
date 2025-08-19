@@ -28,6 +28,7 @@ public class MedicamentosController : ControllerBase
         bool Viernes,
         bool Sabado,
         bool Domingo,
+        TimeSpan? HoraToma,
         bool Activo = true
     );
 
@@ -68,6 +69,7 @@ public class MedicamentosController : ControllerBase
             Viernes = req.Viernes,
             Sabado = req.Sabado,
             Domingo = req.Domingo,
+            HoraToma = req.HoraToma,
             Activo = req.Activo,
             CreatedAt = DateTime.UtcNow
         };
@@ -102,6 +104,7 @@ public class MedicamentosController : ControllerBase
         e.Viernes = req.Viernes;
         e.Sabado = req.Sabado;
         e.Domingo = req.Domingo;
+        e.HoraToma = req.HoraToma;
         e.Activo = req.Activo;
 
         await _db.SaveChangesAsync();
