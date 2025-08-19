@@ -21,6 +21,9 @@ public partial class DreamInCodeContext : DbContext
     public virtual DbSet<Enfermedades> Enfermedades { get; set; }
 
     public virtual DbSet<HistorialInteracciones> HistorialInteracciones { get; set; }
+    
+    public virtual DbSet<Medicamento> Medicamentos { get; set; } 
+
 
     public virtual DbSet<Messages> Messages { get; set; }
 
@@ -143,7 +146,6 @@ public partial class DreamInCodeContext : DbContext
         entity.Property(e => e.Pregunta).HasMaxLength(500);
         entity.Property(e => e.FechaRespuesta).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
 
-        // 👇 Navegación CONSISTENTE: RespuestasPersonalizadas.Usuario
         entity.HasOne(e => e.Usuario)
               .WithMany()                              // no exponemos colección en Usuarios
               .HasForeignKey(e => e.UsuarioID)
