@@ -26,10 +26,19 @@ builder.Services.AddCors(o =>
         .WithOrigins(
             "http://localhost:5173",
             "https://localhost:5173",
-            "https://web-dream-in-code.vercel.app/" 
+            "https://web-dream-in-code.vercel.app"
         )
+        .SetIsOriginAllowed(origin =>
+        {
+            // ejemplo simple
+            return origin.EndsWith(".vercel.app", StringComparison.OrdinalIgnoreCase)
+                   || origin.Equals("http://localhost:5173", StringComparison.OrdinalIgnoreCase)
+                   || origin.Equals("https://localhost:5173", StringComparison.OrdinalIgnoreCase);
+        })
         .AllowAnyHeader()
-        .AllowAnyMethod());
+        .AllowAnyMethod()
+        .AllowCredentials()
+    );
 });
 
 
