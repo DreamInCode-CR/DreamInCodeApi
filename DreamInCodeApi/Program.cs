@@ -19,7 +19,7 @@ if (string.IsNullOrWhiteSpace(connString))
 builder.Services.AddDbContext<DreamInCodeContext>(opt =>
     opt.UseSqlServer(connString));
 
-/// CORS
+// CORS
 builder.Services.AddCors(o =>
 {
     o.AddPolicy("AllowWeb", p => p
