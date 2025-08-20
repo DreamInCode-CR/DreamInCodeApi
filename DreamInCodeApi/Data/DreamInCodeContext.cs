@@ -30,6 +30,8 @@ public partial class DreamInCodeContext : DbContext
     public virtual DbSet<Perfiles> Perfiles { get; set; }
 
     public virtual DbSet<PreferenciasUsuario> PreferenciasUsuarios { get; set; }
+    
+    public virtual DbSet<ReminderLog> ReminderLog { get; set; }
 
     public virtual DbSet<RespuestasPersonalizadas> RespuestasPersonalizadas { get; set; }
 
@@ -180,6 +182,33 @@ public partial class DreamInCodeContext : DbContext
         entity.Property(e => e.FechaRegistro).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
         entity.Property(e => e.TipoUsuario).HasDefaultValue(1);
 
+    });
+    
+    // ReminderLog
+    modelBuilder.Entity<ReminderLog>(entity =>
+    {
+        entity.ToTable("ReminderLog");
+        entity.HasKey(e => e.ReminderLogID);
+
+        entity.HasIndex(e => new { e.UsuarioID, e.MedicamentoID, e.FechaProgramada, e.HoraProgramada })
+            .IsUnique()
+            .HasDatabaseName("UQ_Reminder_Unique");
+
+        entity.Property(e => e.FechaProgramada).HasColumnType("date");
+        entity.Property(e => e.HoraProgramada).HasColumnType("time(0)");
+        entity.Property(e => e.DisparadoAt).HasDefaultValueSql("(sysdatetime())");
+
+        entity.HasOne(e => e.Usuario)
+            .WithMany()
+            .HasForeignKey(e => e.UsuarioID)
+            .OnDelete(DeleteBehavior.ClientSetNull)
+            .HasConstraintName("FK_ReminderLog_User");
+
+        entity.HasOne(e => e.Medicamento)
+            .WithMany()
+            .HasForeignKey(e => e.MedicamentoID)
+            .OnDelete(DeleteBehavior.ClientSetNull)
+            .HasConstraintName("FK_ReminderLog_Med");
     });
 
     OnModelCreatingPartial(modelBuilder);

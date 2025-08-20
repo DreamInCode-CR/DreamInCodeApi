@@ -32,7 +32,10 @@ public class MedicamentosController : ControllerBase
         bool Domingo,
         string? Hora,
         string? HoraToma,
-        bool Activo = true
+        bool Activo = true,
+        bool RecordatorioHabilitado = false,
+        short MinutosAntes = 0,
+        string? MensajeRecordatorio = null
     );
 
     public record MedDto(
@@ -46,7 +49,10 @@ public class MedicamentosController : ControllerBase
         string? HoraToma,      
         bool Lunes, bool Martes, bool Miercoles, bool Jueves,
         bool Viernes, bool Sabado, bool Domingo,
-        bool Activo
+        bool Activo,
+        bool RecordatorioHabilitado,
+        short MinutosAntes,
+        string? MensajeRecordatorio
     );
 
     private static string? ToHoraString(TimeSpan? t)
@@ -77,11 +83,14 @@ public class MedicamentosController : ControllerBase
         m.Instrucciones,
         m.FechaInicio,
         m.FechaHasta,
-        ToHoraString(m.HoraToma),   // <- "HH:mm" para la UI
-        ToHoraString(m.HoraToma),   // compatibilidad (m.hora || m.horaToma)
+        ToHoraString(m.HoraToma),   
+        ToHoraString(m.HoraToma),
         m.Lunes, m.Martes, m.Miercoles, m.Jueves,
         m.Viernes, m.Sabado, m.Domingo,
-        m.Activo
+        m.Activo,
+        m.RecordatorioHabilitado,
+        m.MinutosAntes,
+        m.MensajeRecordatorio
     );
 
     // ------ Endpoints -------
@@ -123,9 +132,11 @@ public class MedicamentosController : ControllerBase
             Jueves = req.Jueves, Viernes = req.Viernes, Sabado = req.Sabado, Domingo = req.Domingo,
             HoraToma = ParseHora(req.Hora ?? req.HoraToma), // <- acepta "hora" o "horaToma"
             Activo = req.Activo,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            RecordatorioHabilitado = req.RecordatorioHabilitado,
+            MinutosAntes = req.MinutosAntes,
+            MensajeRecordatorio = string.IsNullOrWhiteSpace(req.MensajeRecordatorio) ? null : req.MensajeRecordatorio!.Trim()
         };
-
         _db.Medicamentos.Add(e);
         await _db.SaveChangesAsync();
 
@@ -155,7 +166,10 @@ public class MedicamentosController : ControllerBase
         e.Viernes = req.Viernes; e.Sabado = req.Sabado; e.Domingo = req.Domingo;
         e.HoraToma = ParseHora(req.Hora ?? req.HoraToma);
         e.Activo   = req.Activo;
-
+        e.RecordatorioHabilitado = req.RecordatorioHabilitado;
+        e.MinutosAntes = req.MinutosAntes;
+        e.MensajeRecordatorio = string.IsNullOrWhiteSpace(req.MensajeRecordatorio) ? null : req.MensajeRecordatorio!.Trim();
+        
         await _db.SaveChangesAsync();
         return Ok(new { item = Map(e) });
     }

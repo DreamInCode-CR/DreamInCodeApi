@@ -39,6 +39,10 @@ public class Medicamento
     
     public TimeSpan? HoraToma { get; set; }
     
+    public bool RecordatorioHabilitado { get; set; }  
+    public short MinutosAntes { get; set; }           
+    public string? MensajeRecordatorio { get; set; }
+    
     [ForeignKey(nameof(UsuarioID))]
     public virtual Usuarios Usuario { get; set; } = null!;
 }
